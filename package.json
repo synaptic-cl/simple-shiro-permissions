@@ -1,0 +1,27 @@
+{
+  "name": "simple-shiro-permissions",
+  "version": "1.0.0",
+  "description": "It is a simple module based in apache Shiro style.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --forceExit",
+    "test:watch": "jest --forceExit --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/synaptic-cl/simple-shiro-permissions.git"
+  },
+  "keywords": [
+    "shiro",
+    "permissions"
+  ],
+  "author": "Héctor Villarroel <hvillarroel@synaptic.cl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/synaptic-cl/simple-shiro-permissions/issues"
+  },
+  "homepage": "https://github.com/synaptic-cl/simple-shiro-permissions#readme",
+  "devDependencies": {
+    "jest": "^25.3.0"
+  }
+}
