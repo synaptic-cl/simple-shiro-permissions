@@ -47,7 +47,15 @@ const findPermissions = (permissionsList, value) => {
 }
 
 exports.validateFormat = validateFormat
-exports.check = (permissionsList, value) => findPermissions(permissionsList, value).length > 0
+exports.check = (permissionsList, value) => {
+  if (typeof value === 'string') {
+    return findPermissions(permissionsList, value).length > 0
+  } 
+  if (typeof value === 'object') {
+    return value.flatMap((v) => findPermissions(permissionsList, v)).length > 0
+  }
+  return []
+}
 exports.getPermissions = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value)

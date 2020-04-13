@@ -86,4 +86,9 @@ describe('Check Permissions', () => {
     expect(check(permissions, '*:*,create')).toBeFalsy()
     return done()
   })
+
+  it('It should valid `[loanFlow:view, loanFlow:review]`', (done) => {
+    expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBeTruthy()
+    return done()
+  })
 })
