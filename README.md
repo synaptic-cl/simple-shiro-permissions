@@ -2,7 +2,8 @@
 It is a simple module based in apache Shiro style.
 
 Ref: Apache shiro: https://shiro.apache.org/permissions.html
-For this module only use DOMAIN:ACTION, for more information, go to https://shiro.apache.org/permissions.html#multiple-parts
+
+For this module only use `DOMAIN:ACTION`, for more information, go to https://shiro.apache.org/permissions.html#multiple-parts
 
 
 # Install
