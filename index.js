@@ -1,3 +1,5 @@
+const concat = (x, y) => x.concat(y ? y : [])
+
 const validateFormat = (value) => (
   /^([\w]+|\*):([\w,]+|\*)$/.test(value)
 )
@@ -52,7 +54,7 @@ exports.check = (permissionsList, value) => {
     return findPermissions(permissionsList, value).length > 0
   } 
   if (typeof value === 'object') {
-    return value.flatMap((v) => findPermissions(permissionsList, v)).length > 0
+    return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, []).length > 0
   }
   return []
 }
@@ -61,7 +63,7 @@ exports.getPermissions = (permissionsList, value) => {
     return findPermissions(permissionsList, value)
   } 
   if (typeof value === 'object') {
-    return value.flatMap((v) => findPermissions(permissionsList, v))
+    return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, [])
   }
   return []
 }
