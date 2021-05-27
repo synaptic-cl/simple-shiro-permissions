@@ -12,22 +12,19 @@ const permissions = [
 
 
 describe('Get Permissions', () => {
-  it('It should valid `loanFlow:view`', (done) => {
+  it('It should validate `loanFlow:view`', () => {
     expect(getPermissions(permissions, 'loanFlow:view')).toStrictEqual(['loanFlow:view'])
-    return done()
   })
   
-  it('It should valid `loanFlow:view,review`', (done) => {
+  it('It should validate `loanFlow:view,review`', () => {
     expect(getPermissions(permissions, 'loanFlow:view,review')).toStrictEqual(['loanFlow:view', 'loanFlow:review'])
-    return done()
   })
 
-  it('It should valid `loanFlow:*`', (done) => {
+  it('It should validate `loanFlow:*`', () => {
     expect(getPermissions(permissions, 'loanFlow:*')).toStrictEqual(['loanFlow:view', 'loanFlow:review', 'loanFlow:create'])
-    return done()
   })
 
-  it('It should valid `*:*`', (done) => {
+  it('It should validate `*:*`', () => {
     expect(getPermissions(permissions, '*:*')).toStrictEqual([
       'loanFlow:view',
       'loanFlow:review',
@@ -37,63 +34,51 @@ describe('Get Permissions', () => {
       'user:update',
       'user:delete'
     ])
-    return done()
   })
 
-  it('It should valid `*:view`', (done) => {
+  it('It should validate `*:view`', () => {
     expect(getPermissions(permissions, '*:view')).toStrictEqual(['loanFlow:view', 'user:view'])
-    return done()
   })
 
-  it('It should valid `*:view,read`', (done) => {
+  it('It should validate `*:view,read`', () => {
     expect(getPermissions(permissions, '*:view,create')).toStrictEqual(['loanFlow:view', 'loanFlow:create', 'user:view', 'user:create'])
-    return done()
   })
 
-  it('It should valid `[loanFlow:view, loanFlow:review]`', (done) => {
+  it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
     expect(getPermissions(permissions, ['loanFlow:view', 'loanFlow:review'])).toStrictEqual(['loanFlow:view', 'loanFlow:review'])
-    return done()
   })
 })
 
 describe('Check Permissions', () => {
-  it('It should valid `loanFlow:view`', (done) => {
+  it('It should validate `loanFlow:view`', () => {
     expect(check(permissions, 'loanFlow:view')).toBeTruthy()
-    return done()
   })
   
-  it('It should valid `loanFlow:view,review`', (done) => {
+  it('It should validate `loanFlow:view,review`', () => {
     expect(check(permissions, 'loanFlow:view,review')).toBeTruthy()
-    return done()
   })
 
-  it('It should valid `loanFlow:*`', (done) => {
+  it('It should validate `loanFlow:*`', () => {
     expect(check(permissions, 'loanFlow:*')).toBeTruthy()
-    return done()
   })
 
-  it('It should valid `*:*`', (done) => {
+  it('It should validate `*:*`', () => {
     expect(check(permissions, '*:*')).toBeTruthy()
-    return done()
   })
 
-  it('It should valid `*:view`', (done) => {
+  it('It should validate `*:view`', () => {
     expect(check(permissions, '*:view')).toBeTruthy()
-    return done()
   })
 
-  it('It should valid `*:view,read`', (done) => {
+  it('It should validate `*:view,read`', () => {
     expect(check(permissions, '*:view,create')).toBeTruthy()
-    return done()
   })
 
-  it('It should valid `*:*,read`', (done) => {
+  it('It should validate `*:*,read`', () => {
     expect(check(permissions, '*:*,create')).toBeFalsy()
-    return done()
   })
 
-  it('It should valid `[loanFlow:view, loanFlow:review]`', (done) => {
+  it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
     expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBeTruthy()
-    return done()
   })
 })
