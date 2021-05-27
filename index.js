@@ -37,16 +37,13 @@ const findPermissions = (permissionsList, value) => {
       return permission.startsWith(`${domain}:`)
     }
 
-    // [ACTION]:*
+    // *:[ACTION]
     if (domain === '*') {
       return permission.endsWith(`:${action}`)
     }
 
     // Case without * only exact
-    if (permission.startsWith(`${domain}:`)) {
-      return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
-    }
-    return false
+    return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
   })
 
   // if multi actions [DOMAIN]:[ACTION],[ACTION]
