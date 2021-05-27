@@ -7,7 +7,9 @@ const permissions = [
     'user:view',
     'user:create',
     'user:update',
-    'user:delete'
+    'user:delete',
+    'user:edit-profile',
+    'a.small_custom-module:query'
 ]
 
 
@@ -32,7 +34,9 @@ describe('Get Permissions', () => {
       'user:view',
       'user:create',
       'user:update',
-      'user:delete'
+      'user:delete',
+      'user:edit-profile',
+      'a.small_custom-module:query'
     ])
   })
 
@@ -52,6 +56,10 @@ describe('Get Permissions', () => {
 describe('Check Permissions', () => {
   it('It should validate `loanFlow:view`', () => {
     expect(check(permissions, 'loanFlow:view')).toBeTruthy()
+  })
+
+  it('It should validate `a.small_custom-module:query`', () => {
+    expect(check(permissions, 'a.small_custom-module:query')).toBeTruthy()
   })
   
   it('It should validate `loanFlow:view,review`', () => {
@@ -76,6 +84,10 @@ describe('Check Permissions', () => {
 
   it('It should validate `*:*,read`', () => {
     expect(check(permissions, '*:*,create')).toBeFalsy()
+  })
+
+  it('It should validate `user:edit-profile`', () => {
+    expect(check(permissions, 'user:edit-profile')).toBeTruthy()
   })
 
   it('It should validate `[loanFlow:view, loanFlow:review]`', () => {

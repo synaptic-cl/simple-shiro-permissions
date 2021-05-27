@@ -10,7 +10,7 @@ const concat = (x, y) => x.concat(y ? y : [])
  * @returns {boolean}
  */
 const validateFormat = (value) => (
-  /^([\w]+|\*):([\w,]+|\*)$/.test(value)
+  /^([\w._-]+|\*):([\w,._-]+|\*)$/.test(value)
 )
 
 /**
@@ -28,25 +28,23 @@ const findPermissions = (permissionsList, value) => {
     if (typeof permission !== 'string') {
       throw new Error('the permission must a array of string ["domain:action", "domain2:action2"]')
     }
-    // if is */*
-    if (/^(\*):(\*)$/.test(value)) {
+    if (value === '*:*') {
       return true
     }
-    // if is [DOMAIN]:*
-    if (/^([\w]+):(\*)$/.test(value)) {
+
+    // [DOMAIN]:*
+    if (action === '*') {
       return permission.startsWith(`${domain}:`)
     }
 
-    // if is *:[ACTION]
-    if (/^(\*):([\w]+|\*)$/.test(value)) {
+    // [ACTION]:*
+    if (domain === '*') {
       return permission.endsWith(`:${action}`)
     }
 
     // Case without * only exact
-    if (/^([\w]+):([\w]+)$/.test(value)) {
-      if (permission.startsWith(`${domain}:`)) {
-        return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
-      }
+    if (permission.startsWith(`${domain}:`)) {
+      return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
     }
     return false
   })
