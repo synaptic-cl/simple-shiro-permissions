@@ -78,11 +78,11 @@ describe('Check Permissions', () => {
     expect(check(permissions, '*:view')).toBeTruthy()
   })
 
-  it('It should validate `*:view,read`', () => {
+  it('It should validate `*:view,create`', () => {
     expect(check(permissions, '*:view,create')).toBeTruthy()
   })
 
-  it('It should validate `*:*,read`', () => {
+  it('It should validate `*:*,create`', () => {
     expect(check(permissions, '*:*,create')).toBeFalsy()
   })
 
