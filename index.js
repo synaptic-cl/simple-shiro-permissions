@@ -1,24 +1,38 @@
+/**
+ * @param {string[]} x 
+ * @param {string[]} y 
+ * @returns {string[]}
+ */
 const concat = (x, y) => x.concat(y ? y : [])
 
+/**
+ * @param {string} value 
+ * @returns {boolean}
+ */
 const validateFormat = (value) => (
   /^([\w]+|\*):([\w,]+|\*)$/.test(value)
 )
 
+/**
+ * @param {string[]} permissionsList 
+ * @param {string} value 
+ * @returns {string[]}
+ */
 const findPermissions = (permissionsList, value) => {
   if (!validateFormat(value)) {
     console.warn('The format is invalid')
-    return false
+    return []
   }
   const [domain, action] = value.split(':')
   let response = permissionsList.filter((permission) => {
     if (typeof permission !== 'string') {
-      throw new ('the permission must a array of string ["domain:action", "domain2:action2"]')
+      throw new Error('the permission must a array of string ["domain:action", "domain2:action2"]')
     }
     // if is */*
     if (/^(\*):(\*)$/.test(value)) {
       return true
     }
-    // if is [DOMIAN]:*
+    // if is [DOMAIN]:*
     if (/^([\w]+):(\*)$/.test(value)) {
       return permission.startsWith(`${domain}:`)
     }
@@ -49,6 +63,12 @@ const findPermissions = (permissionsList, value) => {
 }
 
 exports.validateFormat = validateFormat
+
+/**
+ * @param {string[]} permissionsList 
+ * @param {string | string[]} value 
+ * @returns {boolean}
+ */
 exports.check = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value).length > 0
@@ -56,8 +76,14 @@ exports.check = (permissionsList, value) => {
   if (typeof value === 'object') {
     return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, []).length > 0
   }
-  return []
+  return false
 }
+
+/**
+ * @param {string[]} permissionsList 
+ * @param {string | string[]} value 
+ * @returns {string[]}
+ */
 exports.getPermissions = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value)
