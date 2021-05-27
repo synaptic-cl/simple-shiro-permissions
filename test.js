@@ -44,7 +44,7 @@ describe('Get Permissions', () => {
     expect(getPermissions(permissions, '*:view')).toStrictEqual(['loanFlow:view', 'user:view'])
   })
 
-  it('It should validate `*:view,read`', () => {
+  it('It should validate `*:view,create`', () => {
     expect(getPermissions(permissions, '*:view,create')).toStrictEqual(['loanFlow:view', 'loanFlow:create', 'user:view', 'user:create'])
   })
 
