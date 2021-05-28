@@ -51,46 +51,58 @@ describe('Get Permissions', () => {
   it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
     expect(getPermissions(permissions, ['loanFlow:view', 'loanFlow:review'])).toStrictEqual(['loanFlow:view', 'loanFlow:review'])
   })
+
+  it('It should reject other data types', () => {
+    expect(getPermissions(permissions, 1234)).toStrictEqual([])
+    expect(getPermissions(permissions, {})).toStrictEqual([])
+    expect(getPermissions(permissions, /user:view/)).toStrictEqual([])
+  })
 })
 
 describe('Check Permissions', () => {
   it('It should validate `loanFlow:view`', () => {
-    expect(check(permissions, 'loanFlow:view')).toBeTruthy()
+    expect(check(permissions, 'loanFlow:view')).toBe(true)
   })
 
   it('It should validate `a.small_custom-module:query`', () => {
-    expect(check(permissions, 'a.small_custom-module:query')).toBeTruthy()
+    expect(check(permissions, 'a.small_custom-module:query')).toBe(true)
   })
   
   it('It should validate `loanFlow:view,review`', () => {
-    expect(check(permissions, 'loanFlow:view,review')).toBeTruthy()
+    expect(check(permissions, 'loanFlow:view,review')).toBe(true)
   })
 
   it('It should validate `loanFlow:*`', () => {
-    expect(check(permissions, 'loanFlow:*')).toBeTruthy()
+    expect(check(permissions, 'loanFlow:*')).toBe(true)
   })
 
   it('It should validate `*:*`', () => {
-    expect(check(permissions, '*:*')).toBeTruthy()
+    expect(check(permissions, '*:*')).toBe(true)
   })
 
   it('It should validate `*:view`', () => {
-    expect(check(permissions, '*:view')).toBeTruthy()
+    expect(check(permissions, '*:view')).toBe(true)
   })
 
   it('It should validate `*:view,create`', () => {
-    expect(check(permissions, '*:view,create')).toBeTruthy()
+    expect(check(permissions, '*:view,create')).toBe(true)
   })
 
   it('It should validate `*:*,create`', () => {
-    expect(check(permissions, '*:*,create')).toBeFalsy()
+    expect(check(permissions, '*:*,create')).toBe(false)
   })
 
   it('It should validate `user:edit-profile`', () => {
-    expect(check(permissions, 'user:edit-profile')).toBeTruthy()
+    expect(check(permissions, 'user:edit-profile')).toBe(true)
   })
 
   it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
-    expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBeTruthy()
+    expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBe(true)
+  })
+
+  it('It should reject other data types', () => {
+    expect(check(permissions, 1234)).toBe(false)
+    expect(check(permissions, {})).toBe(false)
+    expect(check(permissions, /user:view/)).toBe(false)
   })
 })
