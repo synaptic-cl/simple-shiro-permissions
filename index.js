@@ -68,7 +68,7 @@ exports.check = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value).length > 0
   } 
-  if (typeof value === 'object') {
+  if (Array.isArray(value)) {
     return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, []).length > 0
   }
   return false
@@ -83,7 +83,7 @@ exports.getPermissions = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value)
   } 
-  if (typeof value === 'object') {
+  if (Array.isArray(value)) {
     return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, [])
   }
   return []
