@@ -7,27 +7,26 @@ const permissions = [
     'user:view',
     'user:create',
     'user:update',
-    'user:delete'
+    'user:delete',
+    'user:edit-profile',
+    'a.small_custom-module:query'
 ]
 
 
 describe('Get Permissions', () => {
-  it('It should valid `loanFlow:view`', (done) => {
+  it('It should validate `loanFlow:view`', () => {
     expect(getPermissions(permissions, 'loanFlow:view')).toStrictEqual(['loanFlow:view'])
-    return done()
   })
   
-  it('It should valid `loanFlow:view,review`', (done) => {
+  it('It should validate `loanFlow:view,review`', () => {
     expect(getPermissions(permissions, 'loanFlow:view,review')).toStrictEqual(['loanFlow:view', 'loanFlow:review'])
-    return done()
   })
 
-  it('It should valid `loanFlow:*`', (done) => {
+  it('It should validate `loanFlow:*`', () => {
     expect(getPermissions(permissions, 'loanFlow:*')).toStrictEqual(['loanFlow:view', 'loanFlow:review', 'loanFlow:create'])
-    return done()
   })
 
-  it('It should valid `*:*`', (done) => {
+  it('It should validate `*:*`', () => {
     expect(getPermissions(permissions, '*:*')).toStrictEqual([
       'loanFlow:view',
       'loanFlow:review',
@@ -35,65 +34,75 @@ describe('Get Permissions', () => {
       'user:view',
       'user:create',
       'user:update',
-      'user:delete'
+      'user:delete',
+      'user:edit-profile',
+      'a.small_custom-module:query'
     ])
-    return done()
   })
 
-  it('It should valid `*:view`', (done) => {
+  it('It should validate `*:view`', () => {
     expect(getPermissions(permissions, '*:view')).toStrictEqual(['loanFlow:view', 'user:view'])
-    return done()
   })
 
-  it('It should valid `*:view,read`', (done) => {
+  it('It should validate `*:view,create`', () => {
     expect(getPermissions(permissions, '*:view,create')).toStrictEqual(['loanFlow:view', 'loanFlow:create', 'user:view', 'user:create'])
-    return done()
   })
 
-  it('It should valid `[loanFlow:view, loanFlow:review]`', (done) => {
+  it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
     expect(getPermissions(permissions, ['loanFlow:view', 'loanFlow:review'])).toStrictEqual(['loanFlow:view', 'loanFlow:review'])
-    return done()
+  })
+
+  it('It should reject other data types', () => {
+    expect(getPermissions(permissions, 1234)).toStrictEqual([])
+    expect(getPermissions(permissions, {})).toStrictEqual([])
+    expect(getPermissions(permissions, /user:view/)).toStrictEqual([])
   })
 })
 
 describe('Check Permissions', () => {
-  it('It should valid `loanFlow:view`', (done) => {
-    expect(check(permissions, 'loanFlow:view')).toBeTruthy()
-    return done()
+  it('It should validate `loanFlow:view`', () => {
+    expect(check(permissions, 'loanFlow:view')).toBe(true)
+  })
+
+  it('It should validate `a.small_custom-module:query`', () => {
+    expect(check(permissions, 'a.small_custom-module:query')).toBe(true)
   })
   
-  it('It should valid `loanFlow:view,review`', (done) => {
-    expect(check(permissions, 'loanFlow:view,review')).toBeTruthy()
-    return done()
+  it('It should validate `loanFlow:view,review`', () => {
+    expect(check(permissions, 'loanFlow:view,review')).toBe(true)
   })
 
-  it('It should valid `loanFlow:*`', (done) => {
-    expect(check(permissions, 'loanFlow:*')).toBeTruthy()
-    return done()
+  it('It should validate `loanFlow:*`', () => {
+    expect(check(permissions, 'loanFlow:*')).toBe(true)
   })
 
-  it('It should valid `*:*`', (done) => {
-    expect(check(permissions, '*:*')).toBeTruthy()
-    return done()
+  it('It should validate `*:*`', () => {
+    expect(check(permissions, '*:*')).toBe(true)
   })
 
-  it('It should valid `*:view`', (done) => {
-    expect(check(permissions, '*:view')).toBeTruthy()
-    return done()
+  it('It should validate `*:view`', () => {
+    expect(check(permissions, '*:view')).toBe(true)
   })
 
-  it('It should valid `*:view,read`', (done) => {
-    expect(check(permissions, '*:view,create')).toBeTruthy()
-    return done()
+  it('It should validate `*:view,create`', () => {
+    expect(check(permissions, '*:view,create')).toBe(true)
   })
 
-  it('It should valid `*:*,read`', (done) => {
-    expect(check(permissions, '*:*,create')).toBeFalsy()
-    return done()
+  it('It should validate `*:*,create`', () => {
+    expect(check(permissions, '*:*,create')).toBe(false)
   })
 
-  it('It should valid `[loanFlow:view, loanFlow:review]`', (done) => {
-    expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBeTruthy()
-    return done()
+  it('It should validate `user:edit-profile`', () => {
+    expect(check(permissions, 'user:edit-profile')).toBe(true)
+  })
+
+  it('It should validate `[loanFlow:view, loanFlow:review]`', () => {
+    expect(check(permissions, ['loanFlow:view', 'loanFlow:review'])).toBe(true)
+  })
+
+  it('It should reject other data types', () => {
+    expect(check(permissions, 1234)).toBe(false)
+    expect(check(permissions, {})).toBe(false)
+    expect(check(permissions, /user:view/)).toBe(false)
   })
 })

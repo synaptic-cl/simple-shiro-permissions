@@ -1,40 +1,49 @@
+/**
+ * @param {string[]} x 
+ * @param {string[]} y 
+ * @returns {string[]}
+ */
 const concat = (x, y) => x.concat(y ? y : [])
 
+/**
+ * @param {string} value 
+ * @returns {boolean}
+ */
 const validateFormat = (value) => (
-  /^([\w]+|\*):([\w,]+|\*)$/.test(value)
+  /^([\w._-]+|\*):([\w,._-]+|\*)$/.test(value)
 )
 
+/**
+ * @param {string[]} permissionsList 
+ * @param {string} value 
+ * @returns {string[]}
+ */
 const findPermissions = (permissionsList, value) => {
   if (!validateFormat(value)) {
     console.warn('The format is invalid')
-    return false
+    return []
   }
   const [domain, action] = value.split(':')
   let response = permissionsList.filter((permission) => {
     if (typeof permission !== 'string') {
-      throw new ('the permission must a array of string ["domain:action", "domain2:action2"]')
+      throw new Error('the permission must a array of string ["domain:action", "domain2:action2"]')
     }
-    // if is */*
-    if (/^(\*):(\*)$/.test(value)) {
+    if (value === '*:*') {
       return true
     }
-    // if is [DOMIAN]:*
-    if (/^([\w]+):(\*)$/.test(value)) {
+
+    // [DOMAIN]:*
+    if (action === '*') {
       return permission.startsWith(`${domain}:`)
     }
 
-    // if is *:[ACTION]
-    if (/^(\*):([\w]+|\*)$/.test(value)) {
+    // *:[ACTION]
+    if (domain === '*') {
       return permission.endsWith(`:${action}`)
     }
 
     // Case without * only exact
-    if (/^([\w]+):([\w]+)$/.test(value)) {
-      if (permission.startsWith(`${domain}:`)) {
-        return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
-      }
-    }
-    return false
+    return permission.startsWith(`${domain}:`) && permission.endsWith(`:${action}`)
   })
 
   // if multi actions [DOMAIN]:[ACTION],[ACTION]
@@ -49,20 +58,32 @@ const findPermissions = (permissionsList, value) => {
 }
 
 exports.validateFormat = validateFormat
+
+/**
+ * @param {string[]} permissionsList 
+ * @param {string | string[]} value 
+ * @returns {boolean}
+ */
 exports.check = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value).length > 0
   } 
-  if (typeof value === 'object') {
+  if (Array.isArray(value)) {
     return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, []).length > 0
   }
-  return []
+  return false
 }
+
+/**
+ * @param {string[]} permissionsList 
+ * @param {string | string[]} value 
+ * @returns {string[]}
+ */
 exports.getPermissions = (permissionsList, value) => {
   if (typeof value === 'string') {
     return findPermissions(permissionsList, value)
   } 
-  if (typeof value === 'object') {
+  if (Array.isArray(value)) {
     return value.map((v) => findPermissions(permissionsList, v)).reduce(concat, [])
   }
   return []

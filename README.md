@@ -33,7 +33,7 @@ getPermissions(permissions, 'loanFlow:view')
 // ['loanFlow:view']
 check(permissions, 'loanFlow:view')
 // Result
-// True
+// true
 
 getPermissions(permissions, 'loanFlow:view,review')
 // Result
