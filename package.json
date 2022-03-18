@@ -1,6 +1,6 @@
 {
   "name": "simple-shiro-permissions",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "It is a simple module based in apache Shiro style.",
   "main": "index.js",
   "scripts": {
